@@ -1,4 +1,3 @@
-cat << 'EOF' > app/page.tsx
 'use client';
 import { useState } from 'react';
 import { categories, convert } from '../lib/units';
