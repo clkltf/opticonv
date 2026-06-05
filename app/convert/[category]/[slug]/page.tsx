@@ -5,29 +5,22 @@ export async function generateMetadata({ params }: any) {
   const { category, slug } = await params;
   const [from, to] = slug.split('-to-');
   const cat = categories[category];
-  
   if (!cat || !cat.units[from] || !cat.units[to]) return { title: 'Unit Converter' };
-
-  const fromName = cat.units[from].name.en;
-  const toName = cat.units[to].name.en;
-
   return {
-    title: `Convert 1 ${fromName} to ${toName} | OptiConv`,
-    description: `Free instant calculation tool for 1 ${fromName} to ${toName}. Find exact conversion rates, mathematical logic, and multi-unit dashboards.`,
+    title: `Convert 1 ${cat.units[from].name.en} to ${cat.units[to].name.en} | OptiConv`,
+    description: `Instant metrics calculation for ${cat.units[from].name.en} to ${cat.units[to].name.en}.`,
   };
 }
 
 export default async function SeoPage({ params }: any) {
   const { category, slug } = await params;
   const [from, to] = slug.split('-to-');
-  
   const cat = categories[category];
+  
   if (!cat || !cat.units[from] || !cat.units[to]) {
     return <div className="p-10 text-center text-gray-500">Conversion mismatch error.</div>;
   }
 
-  const fromName = cat.units[from].name.en;
-  const toName = cat.units[to].name.en;
   const defaultResult = convert(1, from, to, category);
 
   return (
@@ -36,18 +29,17 @@ export default async function SeoPage({ params }: any) {
         <Link href="/" className="text-xl font-black text-blue-600">OptiConv</Link>
       </nav>
 
-      <div className="max-w-2xl mx-auto mt-12 p-6 md:p-8 bg-white border border-gray-200 rounded-3xl shadow-sm">
-        <span className="text-xs font-bold text-blue-600 uppercase tracking-widest">{cat.name.en} Metric Conversion</span>
-        <h1 className="text-3xl font-black text-gray-900 mt-1 mb-6">How much is 1 {fromName} in {toName}?</h1>
+      <div className="max-w-2xl mx-auto mt-12 p-6 md:p-8 bg-white border border-gray-200 rounded-2xl shadow-sm">
+        <span className="text-xs font-bold text-blue-600 uppercase tracking-widest">{cat.name.en} Ratio</span>
+        <h1 className="text-2xl font-black text-gray-900 mt-2 mb-6">How much is 1 {cat.units[from].name.en} in {cat.units[to].name.en}?</h1>
         
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6 rounded-2xl text-center mb-6 shadow">
-          <div className="text-sm font-medium opacity-80">1 {fromName} =</div>
-          <div className="text-4xl font-black mt-1 font-mono">{defaultResult.toLocaleString('en', { maximumFractionDigits: 6 })} {toName}</div>
+        <div className="bg-gray-50 border border-gray-200 p-4 rounded-xl font-mono text-center text-lg font-bold text-gray-900">
+          1 {cat.units[from].name.en} = {defaultResult.toLocaleString('en', { maximumFractionDigits: 6 })} {cat.units[to].name.en}
         </div>
 
-        <div className="border-t border-gray-100 pt-6 text-center">
+        <div className="border-t border-gray-100 mt-6 pt-6 text-center">
           <Link href="/" className="text-sm font-semibold text-blue-600 hover:underline">
-            ← Open Complete Multi-Language Dashboard & Tables
+            &larr; Open Complete Dashboard & Tables
           </Link>
         </div>
       </div>
